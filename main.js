@@ -1,10 +1,18 @@
 const express = require("express");
+const { expressCspHeader } = require('express-csp-header');
 const bodyParser = require("body-parser");
 const db = require("./src/api/database");
 const app = express();
 
 app.use(bodyParser.text());
 app.use(express.static(__dirname + "/public/assets"));
+app.use(expressCspHeader({
+  directives: {
+    'require-trusted-types-for': "'script'"
+  }
+}));
+
+
 
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/public/index.html");
