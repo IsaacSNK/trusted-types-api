@@ -1,17 +1,26 @@
 const express = require("express");
 const { expressCspHeader } = require('express-csp-header');
 const bodyParser = require("body-parser");
-const db = require("./src/api/database");
+const db = require("./src/database");
 const app = express();
 
 app.use(bodyParser.text());
 app.use(express.static(__dirname + "/public/assets"));
+
+// Un-comment to force trusted-types on the browser
 app.use(expressCspHeader({
   directives: {
     'require-trusted-types-for': "'script'"
   }
 }));
 
+// Un-comment to force trusted-types on the browser with restricted policies
+// app.use(expressCspHeader({
+//   directives: {
+//     'require-trusted-types-for': "'script'",
+//     'trusted-types': "default custom-policy"
+//   }
+// }));
 
 
 app.get("/", function (req, res) {

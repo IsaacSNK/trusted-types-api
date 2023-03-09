@@ -1,4 +1,5 @@
 var policyCreator = createDefaultPolicy();
+var customPolicyCreator = createPolicy();
 
 initUi();
 loadItems();
@@ -6,6 +7,12 @@ loadItems();
 
 function createDefaultPolicy() {
   return trustedTypes.createPolicy("default", {
+    createHTML: (string) => string.replace(/\</g, '&lt;'),
+  });
+}
+
+function createPolicy() {
+  return trustedTypes.createPolicy("custom-policy", {
     createHTML: (string) => string.replace(/\</g, '&lt;'),
   });
 }
@@ -58,7 +65,8 @@ function createNewTaskElement(taskString, complete, id) {
   checkBox.type = "checkBox";
   checkBox.checked = complete;
   
-  label.innerHTML = taskString;
+  //label.innerHTML = taskString;
+  label.innerHTML = customPolicyCreator.createHTML(taskString);
 
   listItem.appendChild(checkBox);
   listItem.appendChild(label);
